@@ -1,24 +1,30 @@
 from bs4 import BeautifulSoup
-from datetime import date
+import datetime
 import tkinter as tk
+from tkinter import ttk
+from constants import *
 import requests
 
 window = tk.Tk()
-title = tk.Label(text="Currency Converter")
-title.grid(row=0, column=1)
+window.title("Currency Converter")
 
-today = date.today()
-dates = tk.Label(text=str(today))
+today = datetime.datetime.now()
+date = ""
+date += today.strftime("%b") + " " + today.strftime("%d") + " " + today.strftime("%H") + ":" + \
+        today.strftime("%M") + " " + today.strftime("%p") + " " + today.strftime("%Z")
+dates = tk.Label(text=str(date))
 dates.grid(row=1, column=1)
 
 currname = tk.Label(text="Currency Name")
 currname.grid(row=1, column =2)
 
-entry1 = tk.Entry(window, justify='center')
-entry1.grid(row = 2, column=2)
+combobox = ttk.Combobox(window, values=currency_list, state='readonly')
+combobox.grid(row=2, column=2)
+combobox.current(0)
 
-entry2 = tk.Entry(window, justify='center')
-entry2.grid(row=3, column=2)
+combobox_two = ttk.Combobox(window, values=currency_list, state='readonly')
+combobox_two.grid(row=3, column=2)
+combobox_two.current(0)
 
 currval = tk.Label(text="Currency Value")
 currval.grid(row=1, column=0)
@@ -27,8 +33,27 @@ val = tk.Entry(window, justify='center')
 val.grid(row=2, column=0)
 
 def converter():
-    curr1 = tk.Entry.get(entry1)
-    curr2 = tk.Entry.get(entry2)
+    curr_temp = combobox.get()
+    curr_temp_two = combobox_two.get()
+
+    curr1 = ""
+    curr2 = ""
+
+    for i in range(len(curr_temp)):
+        if curr_temp[i] == " ":
+            curr1 += "+"
+
+        else:
+            curr1 += curr_temp[i]
+
+    for i in range(len(curr_temp_two)):
+        if curr_temp_two[i] == " ":
+            curr2 += "+"
+
+        else:
+            curr2 += curr_temp_two[i]
+
+
 
     url = f"https://www.google.com/search?q={curr1}+to+{curr2}"
     data = requests.get(url)
@@ -44,9 +69,13 @@ def converter():
 
     x = val.get()
 
-    new_curr = float(value) * float(x)
+    if curr1 == curr2:
+        final = tk.Label(text=str(x))
 
-    final = tk.Label(text=str(new_curr))
+    else:
+        new_curr = float(value) * float(x)
+        final = tk.Label(text=str(new_curr))
+
     final.grid(row=3, column = 0)
 
 
