@@ -8,29 +8,37 @@ import requests
 window = tk.Tk()
 window.title("Currency Converter")
 
+window.geometry("670x400")
+window.minsize(width=670, height=350)
+window.maxsize(width=670, height=400)
+
+style = ttk.Style()
+style.configure('W.TButton', font=('Bahnschrift Light SemiCondensed', 19, 'underline'))
+
 today = datetime.datetime.now()
 date = ""
-date += today.strftime("%b") + " " + today.strftime("%d") + " " + today.strftime("%H") + ":" + \
+date += today.strftime("%b") + " " + today.strftime("%d") + " " + today.strftime("%I") + ":" + \
         today.strftime("%M") + " " + today.strftime("%p") + " " + today.strftime("%Z")
-dates = tk.Label(text=str(date))
+dates = tk.Label(text=str(date), font=('Bahnschrift Light SemiCondensed', 19))
 dates.grid(row=1, column=1)
 
-currname = tk.Label(text="Currency Name")
-currname.grid(row=1, column =2)
+currname = tk.Label(text="Currency Name", font=('Bahnschrift Light SemiCondensed', 19))
+currname.grid(row=3, column=2)
 
-combobox = ttk.Combobox(window, values=currency_list, state='readonly')
-combobox.grid(row=2, column=2)
+combobox = ttk.Combobox(window, values=currency_list, state='readonly', font=('Bahnschrift Light SemiCondensed', 19))
+combobox.grid(row=4, column=2)
 combobox.current(0)
 
-combobox_two = ttk.Combobox(window, values=currency_list, state='readonly')
-combobox_two.grid(row=3, column=2)
+combobox_two = ttk.Combobox(window, values=currency_list, state='readonly', font=('Bahnschrift Light SemiCondensed', 19))
+combobox_two.grid(row=5, column=2)
 combobox_two.current(0)
 
-currval = tk.Label(text="Currency Value")
-currval.grid(row=1, column=0)
+currval = tk.Label(text="Currency Value", font=('Bahnschrift Light SemiCondensed', 19))
+currval.grid(row=3, column=0)
 
-val = tk.Entry(window, justify='center')
-val.grid(row=2, column=0)
+val = tk.Entry(window, justify='center', font=('Bahnschrift Light SemiCondensed', 19))
+val.grid(row=4, column=0)
+
 
 def converter():
     curr_temp = combobox.get()
@@ -70,22 +78,21 @@ def converter():
     x = val.get()
 
     if curr1 == curr2:
-        final = tk.Label(text=str(x))
+        final = tk.Label(text=str(x), font=('Bahnschrift Light SemiCondensed', 19))
 
     else:
         new_curr = float(value) * float(x)
-        final = tk.Label(text=str(new_curr))
+        final = tk.Label(text=str(new_curr), font=('Bahnschrift Light SemiCondensed', 19))
 
-    final.grid(row=3, column = 0)
+    final.grid(row=5, column=0)
 
 
-button = tk.Button(window,
+button = ttk.Button(window,
+    style='W.TButton',
     text="Convert!",
-    width=15,
-    height=3,
     command=converter)
 
-button.grid(row=4, column=1)
+button.grid(row=8, column=1)
 
 window.mainloop()
 
